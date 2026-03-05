@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE   = 'maazazher/hospital-app'
+        DOCKER_IMAGE   = 'maaz890/hospital-app'
         DOCKER_TAG     = "${BUILD_NUMBER}"
         CONTAINER_NAME = 'hospital-production'
         APP_PORT       = '3000'
