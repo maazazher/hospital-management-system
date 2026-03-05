@@ -1,5 +1,9 @@
 pipeline {
     agent any
+    
+    tools {
+        nodejs 'NodeJS-18'   // Make sure this matches the name in Jenkins configuration
+    }
 
     environment {
         DOCKER_IMAGE   = 'maazazher/hospital-app'
