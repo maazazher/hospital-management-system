@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_IMAGE   = 'maaz890/hospital-app'
         DOCKER_TAG     = "${BUILD_NUMBER}"
-        CONTAINER_NAME = 'hospital-production'
+        CONTAINER_NAME = 'hospital-management-system'
         APP_PORT       = '3000'
     }
 
