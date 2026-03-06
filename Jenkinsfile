@@ -22,7 +22,7 @@ echo ' Checkout complete!'
 stage('Install Dependencies') {
 steps {
 echo ' Installing Node.js dependencies...'
-sh 'npm install'
+sh 'npm install && npm install --save-dev jest supertest'
 echo ' Dependencies installed!'
 }
 }
