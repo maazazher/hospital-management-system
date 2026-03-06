@@ -1,48 +1,20 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-require('dotenv').config();
+// Inside src/server.js
+// ... keep your requires at the top ...
 
-const patientRoutes = require('./routes/patients');
-const doctorRoutes = require('./routes/doctors');
-const appointmentRoutes = require('./routes/appointments');
-
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-app.use(cors());
-app.use(bodyParser.json());
-app.use(express.json());
-
-// FIX: Strictly prevent DB connection during tests to stop timeouts
+// FIX: This stops the 10-second timeout in Jenkins
 if (process.env.NODE_ENV !== 'test') {
     mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/hospital')
     .then(() => console.log(' Connected to MongoDB!'))
     .catch(err => console.error(' MongoDB error:', err));
 }
 
-app.get('/health', (req, res) => {
-    res.json({ status: 'OK', message: 'Hospital Management System is running!' });
-});
+// ... keep your app.get and app.use routes ...
 
-app.get('/', (req, res) => {
-    res.json({
-        message: 'Welcome to Hospital Management System API',
-        version: '1.0.0'
-    });
-});
-
-app.use('/api/patients', patientRoutes);
-app.use('/api/doctors', doctorRoutes);
-app.use('/api/appointments', appointmentRoutes);
-
-// FIX: Standardize export for the test suite
+// FIX: Standardize the export so the test can close the server properly
 let server;
 if (require.main === module) {
     server = app.listen(PORT, () => {
         console.log(` Hospital Server running on port ${PORT}`);
     });
 }
-
 module.exports = { app, server };
