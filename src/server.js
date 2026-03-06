@@ -15,7 +15,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.json());
 
-// Only connect to MongoDB if NOT in test mode to prevent CI timeouts
+// FIX: Strictly prevent DB connection during tests to stop timeouts
 if (process.env.NODE_ENV !== 'test') {
     mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/hospital')
     .then(() => console.log(' Connected to MongoDB!'))
@@ -29,8 +29,7 @@ app.get('/health', (req, res) => {
 app.get('/', (req, res) => {
     res.json({
         message: 'Welcome to Hospital Management System API',
-        version: '1.0.0',
-        endpoints: { patients: '/api/patients', doctors: '/api/doctors', appointments: '/api/appointments' }
+        version: '1.0.0'
     });
 });
 
@@ -38,7 +37,7 @@ app.use('/api/patients', patientRoutes);
 app.use('/api/doctors', doctorRoutes);
 app.use('/api/appointments', appointmentRoutes);
 
-// FIX: Only start the listener if this file is run directly
+// FIX: Standardize export for the test suite
 let server;
 if (require.main === module) {
     server = app.listen(PORT, () => {
